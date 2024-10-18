@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubicación en Tiempo Real</title>
+</head>
+<body>
+
+<h1>Ubicación en Tiempo Real</h1>
+<p id="status">Buscando ubicación...</p>
+<p id="latitud"></p>
+<p id="longitud"></p>
+
+<script>
+    // Verifica si el navegador soporta la Geolocation API
+    if ("geolocation" in navigator) {
+        navigator.geolocation.watchPosition(
+            // Success callback: se ejecuta cuando se obtiene la ubicación
+            (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                document.getElementById("status").textContent = "Ubicación actualizada";
+                document.getElementById("latitud").textContent = `Latitud: ${lat}`;
+                document.getElementById("longitud").textContent = `Longitud: ${lon}`;
+            },
+            // Error callback: se ejecuta si no se puede obtener la ubicación
+            (error) => {
+                document.getElementById("status").textContent = `Error: ${error.message}`;
+            },
+            // Opciones
+            {
+                enableHighAccuracy: true,  // Mayor precisión, pero más uso de batería
+                timeout: 5000,             // Tiempo máximo de espera (5 segundos)
+                maximumAge: 0              // No almacena en caché
+            }
+        );
+    } else {
+        document.getElementById("status").textContent = "La Geolocalización no está soportada por este navegador.";
+    }
+</script>
+
+</body>
+</html>
